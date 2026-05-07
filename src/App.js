@@ -27,7 +27,7 @@ function App() {
           fontWeight: "bold"
         }}
       >
-        ✅ Version 2 Live
+        ✅ Version 1 Live
       </div>
     </div>
   );
