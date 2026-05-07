@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "linear-gradient(135deg, #1e3c72, #2a5298)",
+        color: "white",
+        fontFamily: "Arial"
+      }}
+    >
+      <h1>🚀 React Jenkins CI/CD Demo</h1>
+
+      <h2>Deployment Successful</h2>
+
+      <p>Frontend deployed automatically using Jenkins Pipeline</p>
+
+      <div
+        style={{
+          marginTop: "20px",
+          padding: "12px 24px",
+          background: "#00c853",
+          borderRadius: "10px",
+          fontWeight: "bold"
+        }}
+      >
+        ✅ Version 1 Live
+      </div>
     </div>
   );
 }
