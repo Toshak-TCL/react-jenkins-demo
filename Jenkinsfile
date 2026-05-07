@@ -36,15 +36,17 @@ pipeline {
             }
         }
 
-        stage('Deploy Application') {
-            steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no $APP_SERVER "
-                    sudo rm -rf /var/www/html/* &&
-                    sudo cp -r /tmp/react-build/* /var/www/html/
-                "
-                '''
-            }
-        }
+     stage('Deploy Application') {
+    steps {
+        sh '''
+        ssh -o StrictHostKeyChecking=no $APP_SERVER "
+            rm -rf /var/www/html/* &&
+            cp -r /tmp/react-build/* /var/www/html/ &&
+            chmod -R 755 /var/www/html &&
+            chown -R www-data:www-data /var/www/html
+        "
+        '''
+    }
+}
     }
 }
