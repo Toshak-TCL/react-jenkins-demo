@@ -10,8 +10,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/Toshak-TCL/react-jenkins-demo.git'
+                checkout scm
             }
         }
 
