@@ -39,7 +39,7 @@ pipeline {
     stage('Deploy Application') {
     steps {
         sh '''
-        ssh -m MACs=hmac-sha2-512 $APP_SERVER "
+        ssh -m hmac-sha2-512 $APP_SERVER "
             rm -rf /var/www/html/* &&
             cp -r /tmp/react-build/* /var/www/html/ &&
             chmod -R 755 /var/www/html
