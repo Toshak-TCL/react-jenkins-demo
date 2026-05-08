@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        APP_SERVER = "user@11.22.33.44"
+        APP_SERVER = "clouduser@100.94.70.237"
         IMAGE_NAME = "demo-ui-image"
         CONTAINER_NAME = "demo-ui-container"
     }
