@@ -12,7 +12,7 @@ function App() {
         fontFamily: "Arial"
       }}
     >
-      <h1>🚀 React Jenkins CI/CD Demo</h1>
+      <h1>🚀 React Jenkins CI/CD</h1>
 
       <h2>Deployment Successful</h2>
 
