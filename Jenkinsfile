@@ -1,64 +1,57 @@
-// pipeline {
-
-//     agent any
-
-//     environment {
-//         APP_SERVER = "clouduser@100.94.70.237"
-//     }
-
-//     stages {
-
-//         stage('Install Dependencies') {
-//             steps {
-//                 sh 'npm install'
-//             }
-//         }
-
-//         stage('Build React App') {
-//             steps {
-//                 sh 'npm run build'
-//             }
-//         }
-
-//         stage('Copy Build To App Server') {
-//             steps {
-//                 sh '''
-//                 scp -r -o StrictHostKeyChecking=no \
-//                 build/* $APP_SERVER:/tmp/react-build/
-//                 '''
-//             }
-//         }
-
-//     stage('Deploy Application') {
-//     steps {
-//         sh '''
-//         ssh -m hmac-sha2-512 $APP_SERVER "
-//             rm -rf /var/www/html/* &&
-//             cp -r /tmp/react-build/* /var/www/html/ &&
-//             chmod -R 755 /var/www/html
-//         "
-//         '''
-//     }
-// }
-//     }
-// }
-
 pipeline {
 
     agent any
 
     environment {
-        APP_SERVER = "clouduser@100.94.70.237"
+        APP_SERVER = "user@11.22.33.44"
+        IMAGE_NAME = "demo-ui-image"
+        CONTAINER_NAME = "demo-ui-container"
     }
 
     stages {
 
-        stage('Build Docker React App') {
+        stage('Build Docker Image') {
             steps {
                 sh '''
-                    ssh -m hmac-sha2-512 $APP_SERVER
-                    docker build -t demo-ui-image .
-                    docker run --name demo-ui-container -p 8081:80 -d demo-ui-image
+                    docker build -t $IMAGE_NAME:${BUILD_NUMBER} .
+                '''
+            }
+        }
+
+        stage('Save Docker Image') {
+            steps {
+                sh '''
+                    docker save -o demo-ui-image.tar \
+                    $IMAGE_NAME:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Copy Image To VM34') {
+            steps {
+                sh '''
+                    scp -o StrictHostKeyChecking=no \
+                    demo-ui-image.tar \
+                    $APP_SERVER:/opt/docker_image
+                '''
+            }
+        }
+
+        stage('Deploy Container On VM34') {
+            steps {
+                sh '''
+                    ssh -o StrictHostKeyChecking=no $APP_SERVER "
+
+                        docker load -i /opt/docker_image/demo-ui-image.tar &&
+
+                        docker stop $CONTAINER_NAME || true &&
+                        docker rm $CONTAINER_NAME || true &&
+
+                        docker run -d \
+                        --name $CONTAINER_NAME \
+                        -p 8081:80 \
+                        $IMAGE_NAME:${BUILD_NUMBER}
+                    "
                 '''
             }
         }
