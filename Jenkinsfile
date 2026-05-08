@@ -58,7 +58,7 @@ pipeline {
                 sh '''
                     ssh -m hmac-sha2-512 $APP_SERVER
                     docker build -t demo-ui-image .
-                    docker run --name demo-ui-container -p 8080:80 -d demo-ui-image
+                    docker run --name demo-ui-container -p 8081:80 -d demo-ui-image
                 '''
             }
         }
